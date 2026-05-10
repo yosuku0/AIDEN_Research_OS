@@ -2,15 +2,165 @@ name: Governance CI
 
 on:
   pull_request:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 jobs:
   artifact-existence:
+    name: Required Artifacts Exist
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Validate required governance artifacts exist
         shell: bash
         run: |
-          required=(README.md SAFETY.md docs/system/PRODUCT_BOUNDARY.md docs/system/SYSTEM_OF_SYSTEMS.md docs/governance/SOURCE_OF_TRUTH.md docs/governance/LEDGER_SCHEMA.md research/ledgers/decision-log.md codex/templates/task-template.md)
-          for file in "${required[@]}"; do test -f "$file"; done
+          required=(
+            README.md
+            SAFETY.md
+            docs/system/PRODUCT_BOUNDARY.md
+            docs/system/SYSTEM_OF_SYSTEMS.md
+            docs/governance/SOURCE_OF_TRUTH.md
+            docs/governance/LEDGER_SCHEMA.md
+            research/ledgers/decision-log.md
+            codex/templates/task-template.md
+            scripts/validate-governance.sh
+          )
+
+          failed=0
+          for file in "${required[@]}"; do
+            if [ -f "$file" ]; then
+              echo "OK: $file"
+            else
+              echo "::error file=$file::Required artifact missing: $file"
+              failed=1
+            fi
+          done
+
+          exit "$failed"
+
+  schema-validation:
+    name: Schema Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install schema validator
+        run: pip install check-jsonschema --quiet
+
+      - name: Validate schema files
+        shell: bash
+        run: |
+          failed=0
+
+          while IFS= read -r schema; do
+            if check-jsonschema --check-metaschema "$schema"; then
+              echo "OK: $schema"
+            else
+              echo "::error file=$schema::Schema failed metaschema validation"
+              failed=1
+            fi
+          done < <(find schemas -name '*.json' -print | sort)
+
+          exit "$failed"
+
+      - name: Validate fixture JSON syntax
+        shell: bash
+        run: |
+          failed=0
+
+          while IFS= read -r fixture; do
+            if python -m json.tool "$fixture" >/dev/null; then
+              echo "OK: $fixture"
+            else
+              echo "::error file=$fixture::Fixture is not valid JSON"
+              failed=1
+            fi
+          done < <(find fixtures -name '*.json' -print | sort)
+
+          exit "$failed"
+
+      - name: Validate safe config fixture
+        shell: bash
+        run: |
+          check-jsonschema \
+            --schemafile schemas/secret-manager/safe-config.schema.json \
+            fixtures/security/secret-manager/no-secret.valid.json
+
+  secret-scan:
+    name: Secret Pattern Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scan governed paths for credential patterns
+        shell: bash
+        run: |
+          failed=0
+          scan_paths=()
+
+          for path in docs research schemas fixtures tests packages scripts; do
+            if [ -e "$path" ]; then
+              scan_paths+=("$path")
+            fi
+          done
+
+          patterns=(
+            'sk-[A-Za-z0-9]{20,}'
+            'sk-proj-[A-Za-z0-9_-]{20,}'
+            'ghp_[A-Za-z0-9]{36}'
+            'AIza[0-9A-Za-z_-]{35}'
+            '0x[0-9a-fA-F]{40,}'
+            '-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----'
+            'password[[:space:]]*[:=][[:space:]]*["'\''][^"'\'']{8,}["'\'']'
+            'api[_-]?key[[:space:]]*[:=][[:space:]]*["'\''][^"'\'']{8,}["'\'']'
+          )
+
+          for pattern in "${patterns[@]}"; do
+            if matches=$(grep -RInE --exclude-dir=.git --exclude-dir=.venv --exclude-dir=__pycache__ -- "$pattern" "${scan_paths[@]}" 2>/dev/null); then
+              echo "::error::Secret-like pattern detected for: $pattern"
+              echo "$matches"
+              failed=1
+            fi
+          done
+
+          if env_matches=$(find . -path './.git' -prune -o \( -name '.env' -o -name '.env.*' \) -print); then
+            if [ -n "$env_matches" ]; then
+              echo "::error::Environment file detected"
+              echo "$env_matches"
+              failed=1
+            fi
+          fi
+
+          exit "$failed"
+
+  approval-status-check:
+    name: Approval Status Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Warn when all approvals remain pending
+        shell: bash
+        run: |
+          approval_file="research/ledgers/approval-record.md"
+
+          if [ ! -f "$approval_file" ]; then
+            echo "::warning file=$approval_file::Approval record is missing"
+            exit 0
+          fi
+
+          total=$(grep -Ec '^\| AR-[0-9]+' "$approval_file" || true)
+          pending=$(grep -Ec '^\| AR-[0-9]+.*\|[[:space:]]*pending[[:space:]]*\|[[:space:]]*$' "$approval_file" || true)
+
+          if [ "$total" -gt 0 ] && [ "$total" -eq "$pending" ]; then
+            echo "::warning file=$approval_file::All $total approval records remain pending. Human approval is required before merge."
+          else
+            echo "Approval status check completed: $pending of $total records pending."
+          fi
