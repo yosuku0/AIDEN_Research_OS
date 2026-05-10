@@ -2,24 +2,36 @@
 
 ## Purpose
 
-Candidates: OS keychain primary, local encrypted vault secondary, password manager hold, cloud secret manager rejected as default due provider dependency, hardware-backed storage future, plaintext file never. This is selection only, not runtime approval.
+Evaluate secret manager candidates and select a future approach without implementing runtime custody.
+
+## Evaluation Criteria
+
+Criteria are security, recovery, purge capability, credential rotation support, operational complexity, auditability, and fit with Human approval gates.
+
+## Candidate Evaluation
+
+| Candidate | Security | Recovery | Purge capability | Credential rotation | Decision |
+|---|---|---|---|---|---|
+| OS keychain | Strong local platform custody | Platform-supported | Strong | Good | Selected primary future candidate |
+| Local encrypted vault | Strong if operated correctly | User-managed | Good | Good | Selected secondary future candidate |
+| Password manager | Strong workflow support | Product-dependent | Good | Good | Hold |
+| Cloud secret manager | Strong but provider-dependent | Provider-managed | Good | Good | Rejected as default |
+| Hardware-backed storage | Strong | Operationally complex | Good | Medium | Future review |
+| Plaintext file | Poor | Poor | Poor | Poor | Never |
+
+## Selected Approach
+
+OS keychain is primary and local encrypted vault is secondary. This selection does not approve implementation, secret retrieval, secret storage, provider integration, or runtime code.
+
+## Rejected Approaches
+
+Cloud secret manager is rejected as default due provider dependency. Plaintext file is never allowed.
+
 
 ## Boundary
 
 This artifact is part of the AIDEN Research OS research/control-plane scaffold. It grants no signing, deployment, capital, allowlist, release, wallet, swap, bridge, transfer, or production-write authority.
 
-## Required Headings
-
-Purpose, Boundary, Policy, Procedure, References.
-
-## Policy
-
-Any expansion requires ADR update, ledger update, and Human approval.
-
-## Procedure
-
-Draft artifact, check hard bans, update ledgers, complete review checklist, then request Human gate when applicable.
-
 ## References
 
-Cross-references: SAFETY.md, docs/system/PRODUCT_BOUNDARY.md, docs/system/EXECUTION_BOUNDARY.md, research/ledgers/approval-record.md.
+Cross-references: SAFETY.md, docs/system/PRODUCT_BOUNDARY.md, docs/system/EXECUTION_BOUNDARY.md, docs/governance/APPROVAL_FLOW.md, research/ledgers/approval-record.md.

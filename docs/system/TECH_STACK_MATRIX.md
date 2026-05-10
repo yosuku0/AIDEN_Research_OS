@@ -2,24 +2,29 @@
 
 ## Purpose
 
-Records technology choices from the architecture design.
+Record architecture technology choices and their governance boundaries.
 
-## Boundary
+## Selection Matrix
 
-This artifact is part of the AIDEN Research OS research/control-plane scaffold. It grants no signing, deployment, capital, allowlist, release, wallet, swap, bridge, transfer, or production-write authority.
-
-## Matrix
-
-LangGraph v1.0+ is primary orchestration; CrewAI is prototyping only. Ollama is primary local inference; vLLM is future scale. FastMCP Python is MCP standard. LiteLLM Proxy is unified cloud exit. LangGraph interrupt() is HITL. Firecracker microVM is future sandboxing. Langfuse self-hosted is observability.
+| Layer | Primary | Secondary or Future | Decision |
+|---|---|---|---|
+| Orchestration | LangGraph v1.0+ | CrewAI for prototyping only | LangGraph owns production workflow design. |
+| Checkpoint persistence | InMemory | SQLite, then PostgresSaver for production | Progression follows readiness gates. |
+| Local inference | Ollama | vLLM for future scale | Ollama is primary local inference. |
+| MCP implementation | FastMCP Python | none | FastMCP is the standard implementation candidate. |
+| Hybrid routing | LiteLLM Proxy | direct provider calls rejected | Unified exit with budget controls. |
+| HITL | LangGraph interrupt() | manual issue flow | Human gates interrupt restricted decisions. |
+| Sandboxing | Firecracker microVM | documentation-only fixtures now | Future execution isolation, not implemented here. |
+| Observability | Langfuse self-hosted | JSONL decision provenance | Traceable audit records. |
 
 ## Model References
 
-Local: Llama 3.1 8B Instruct Q4_K_M, Qwen2.5 7B to 14B class, Phi-4 14B class, Llama Guard 3 8B. Cloud escalation: Claude, GPT, and Gemini families through governed routing.
+Local: Llama 3.1 8B Instruct Q4_K_M, Qwen2.5 7B Q5_K_M, Phi-4 14B Q4_K_M, and Llama Guard 3 8B with CPU offload when needed. Cloud escalation: Claude Sonnet 4.5, GPT-5, and Gemini 2.5 Pro through governed routing only.
 
-## Constraints
+## Harness Engineering
 
-Reference hardware is RTX 4070 Ti 12GB with about 10.8GB effective VRAM. Max workflow steps: 15. Budget: 50,000 tokens or 1.00 USD per session. Loop detection compares hashes for the last three turns.
+Max steps limit is 15 steps per workflow. Token and cost budget is 50,000 tokens or 1.00 USD per session. Circuit breaker compares hashes over the last three turns. Audit logs use trace_id, actor, event, reasoning_trace, and governance_policy.
 
-## References
+## Boundary
 
-Cross-references: SAFETY.md, docs/system/PRODUCT_BOUNDARY.md, docs/system/EXECUTION_BOUNDARY.md, research/ledgers/approval-record.md.
+No runtime code, provider integration, package installation, deployment, signing, or production-write behavior is approved by this matrix.
