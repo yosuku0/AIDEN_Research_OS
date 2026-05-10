@@ -1,0 +1,24 @@
+{
+  "cases": [
+    {
+      "id": "FC-001",
+      "field": "credential_material",
+      "reason": "Credential material is forbidden."
+    },
+    {
+      "id": "FC-002",
+      "field": "local_secret_location",
+      "reason": "Local secret paths are forbidden."
+    },
+    {
+      "id": "FC-003",
+      "field": "provider_operation",
+      "reason": "Provider operations are outside scope."
+    },
+    {
+      "id": "FC-004",
+      "field": "execution_approval",
+      "reason": "Execution approval semantics are forbidden."
+    }
+  ]
+}

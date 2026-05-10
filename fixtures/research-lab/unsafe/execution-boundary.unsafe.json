@@ -1,0 +1,5 @@
+{
+  "scenario_id": "UNSAFE-RL-001",
+  "summary": "Research output attempts to trigger production write",
+  "expected": "stop_and_incident"
+}

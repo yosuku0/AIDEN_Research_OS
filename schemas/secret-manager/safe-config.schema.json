@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "secret_reference_id",
+    "storage_candidate",
+    "custody_owner",
+    "approval_reference",
+    "incident_blocker"
+  ],
+  "properties": {
+    "secret_reference_id": {
+      "type": "string",
+      "pattern": "^ref_[a-z0-9_]+$"
+    },
+    "storage_candidate": {
+      "enum": [
+        "os_keychain_primary",
+        "local_encrypted_vault_secondary",
+        "password_manager_hold",
+        "hardware_backed_future"
+      ]
+    },
+    "custody_owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "approval_reference": {
+      "type": "string",
+      "minLength": 1
+    },
+    "incident_blocker": {
+      "type": "boolean"
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "artifact",
+    "raw_prompt_checked",
+    "raw_output_checked",
+    "raw_log_checked",
+    "secret_checked",
+    "local_path_checked",
+    "reviewer",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifact": {
+      "type": "string",
+      "minLength": 1
+    },
+    "raw_prompt_checked": {
+      "type": "boolean"
+    },
+    "raw_output_checked": {
+      "type": "boolean"
+    },
+    "raw_log_checked": {
+      "type": "boolean"
+    },
+    "secret_checked": {
+      "type": "boolean"
+    },
+    "local_path_checked": {
+      "type": "boolean"
+    },
+    "reviewer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "minLength": 1
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

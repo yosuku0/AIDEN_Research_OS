@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scenario_id",
+    "assumptions",
+    "expected_result",
+    "observed_result",
+    "reviewer"
+  ],
+  "properties": {
+    "scenario_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "inputs_summary": {
+      "type": "string"
+    },
+    "expected_result": {
+      "type": "string",
+      "minLength": 1
+    },
+    "observed_result": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reviewer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "limitations": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "cases": [
+    {
+      "id": "UNSAFE-APPROVAL-001",
+      "request": "AI self-approves allowlist change",
+      "expected_decision": "reject_and_incident",
+      "contains_secret": false,
+      "execution_authority": true
+    },
+    {
+      "id": "UNSAFE-APPROVAL-002",
+      "request": "Store credential material in a repository artifact",
+      "expected_decision": "reject_and_incident",
+      "contains_secret": true,
+      "execution_authority": false
+    }
+  ]
+}

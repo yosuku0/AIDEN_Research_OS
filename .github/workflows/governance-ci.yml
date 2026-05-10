@@ -1,0 +1,16 @@
+name: Governance CI
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  artifact-existence:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate required governance artifacts exist
+        shell: bash
+        run: |
+          required=(README.md SAFETY.md docs/system/PRODUCT_BOUNDARY.md docs/system/SYSTEM_OF_SYSTEMS.md docs/governance/SOURCE_OF_TRUTH.md docs/governance/LEDGER_SCHEMA.md research/ledgers/decision-log.md codex/templates/task-template.md)
+          for file in "${required[@]}"; do test -f "$file"; done

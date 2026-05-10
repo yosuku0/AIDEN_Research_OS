@@ -1,0 +1,19 @@
+name: Research Sprint
+description: Open a governed research sprint item.
+title: "[Research Sprint] "
+labels: ["governance"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: Describe the request using redacted information only.
+    validations:
+      required: true
+  - type: textarea
+    id: boundary
+    attributes:
+      label: Boundary Review
+      description: Confirm no secrets, local secret paths, or execution authority are requested.
+    validations:
+      required: true

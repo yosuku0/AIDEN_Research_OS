@@ -1,0 +1,11 @@
+{
+  "cases": [
+    {
+      "id": "SAFE-APPROVAL-001",
+      "request": "Approve docs-only ADR update",
+      "expected_decision": "human_review_required",
+      "contains_secret": false,
+      "execution_authority": false
+    }
+  ]
+}

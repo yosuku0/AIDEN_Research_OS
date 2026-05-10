@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "risk_class",
+    "severity",
+    "likelihood",
+    "status",
+    "trigger",
+    "mitigation_controls",
+    "detection_method",
+    "residual_risk"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "risk_class": {
+      "type": "string",
+      "minLength": 1
+    },
+    "severity": {
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    },
+    "likelihood": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "minLength": 1
+    },
+    "trigger": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mitigation_controls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "detection_method": {
+      "type": "string",
+      "minLength": 1
+    },
+    "residual_risk": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

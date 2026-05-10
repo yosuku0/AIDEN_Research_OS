@@ -1,0 +1,11 @@
+# Governance ownership
+* @repo-owner
+/docs/ @repo-owner
+/research/ @repo-owner
+/codex/ @repo-owner
+/schemas/ @repo-owner
+/fixtures/ @repo-owner
+/tests/ @repo-owner
+/.github/ @repo-owner
+/SAFETY.md @repo-owner
+/README.md @repo-owner

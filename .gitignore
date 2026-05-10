@@ -1,0 +1,21 @@
+.codex/
+CODEX_PROMPT.md
+DIRECTORY_TREE.md
+
+# Local-only raw artifacts and quarantine workspaces
+raw/
+local/
+quarantine/
+tmp/
+
+# Environment and secret-bearing files
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+
+# OS/editor noise
+.DS_Store
+Thumbs.db

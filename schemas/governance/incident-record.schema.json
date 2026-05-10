@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "incident_classification",
+    "severity",
+    "detected_by",
+    "response_steps",
+    "containment_status",
+    "closure_criteria",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "incident_classification": {
+      "type": "string",
+      "minLength": 1
+    },
+    "severity": {
+      "type": "string",
+      "minLength": 1
+    },
+    "detected_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "response_steps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "containment_status": {
+      "type": "string",
+      "minLength": 1
+    },
+    "closure_criteria": {
+      "type": "string",
+      "minLength": 1
+    },
+    "linked_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

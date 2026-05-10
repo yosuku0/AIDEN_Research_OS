@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "research_source",
+    "codex_task",
+    "promotion_criteria",
+    "redaction_status",
+    "approval_reference",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "research_source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "codex_task": {
+      "type": "string",
+      "minLength": 1
+    },
+    "promotion_criteria": {
+      "type": "string",
+      "minLength": 1
+    },
+    "redaction_status": {
+      "type": "string",
+      "minLength": 1
+    },
+    "approval_reference": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}
