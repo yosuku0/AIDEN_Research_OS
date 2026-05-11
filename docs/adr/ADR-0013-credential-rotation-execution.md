@@ -23,8 +23,12 @@ The repository favors reviewed artifacts, ADRs, ledgers, schemas, fixtures, and 
 
 ## Risks
 
-Documentation may drift, approval semantics may become ambiguous, and future contributors may confuse market lab scaffolds with execution systems.
+- Human rotation procedure may be skipped under incident pressure if responsibilities are not explicit.
+- Rotation timing may leave stale references in governance artifacts if follow-up review is missed.
+- See docs/governance/ADR_DIFFERENTIATION_GUIDE.md for cross-cutting risks.
 
 ## Follow-ups
 
-Review this ADR at phase gates, keep linked ledgers current, and open follow-up tasks only within approved boundaries.
+- Keep rotation steps manual and Human-owned until a separate approval authorizes any automation.
+- Review approval records after each rotation event to ensure references remain metadata-only.
+- Review at phase gates; keep linked ledgers current.

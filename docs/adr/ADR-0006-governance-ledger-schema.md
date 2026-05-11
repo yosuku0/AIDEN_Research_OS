@@ -24,8 +24,12 @@ The repository favors reviewed artifacts, ADRs, ledgers, schemas, fixtures, and 
 
 ## Risks
 
-Documentation may drift, approval semantics may become ambiguous, and future contributors may confuse market lab scaffolds with execution systems.
+- Ledger tables may drift from JSON schemas if structure validation is not kept in CI.
+- Strict schemas may block legitimate governance metadata unless extension policy is defined before new fields are introduced.
+- See docs/governance/ADR_DIFFERENTIATION_GUIDE.md for cross-cutting risks.
 
 ## Follow-ups
 
-Review this ADR at phase gates, keep linked ledgers current, and open follow-up tasks only within approved boundaries.
+- Keep ledger validation rules synchronized with docs/governance/LEDGER_SCHEMA.md.
+- Track schema extension requests through SCHEMA_EVOLUTION_POLICY.md before adding new ledger fields.
+- Review at phase gates; keep linked ledgers current.

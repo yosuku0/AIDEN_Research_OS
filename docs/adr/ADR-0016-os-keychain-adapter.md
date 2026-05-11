@@ -24,8 +24,12 @@ The repository favors reviewed artifacts, ADRs, ledgers, schemas, fixtures, and 
 
 ## Risks
 
-Documentation may drift, approval semantics may become ambiguous, and future contributors may confuse market lab scaffolds with execution systems.
+- Adapter scope may drift from metadata reference handling into secret retrieval or storage without approval.
+- Platform keychain differences may hide failure modes that fake tests do not catch.
+- See docs/governance/ADR_DIFFERENTIATION_GUIDE.md for cross-cutting risks.
 
 ## Follow-ups
 
-Review this ADR at phase gates, keep linked ledgers current, and open follow-up tasks only within approved boundaries.
+- Require fake-keyring tests before enabling any OS-specific backend behavior.
+- Validate reference-id-only constraints against safe-config schema before adapter methods are added.
+- Review at phase gates; keep linked ledgers current.

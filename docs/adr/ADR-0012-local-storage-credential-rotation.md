@@ -23,8 +23,12 @@ The repository favors reviewed artifacts, ADRs, ledgers, schemas, fixtures, and 
 
 ## Risks
 
-Documentation may drift, approval semantics may become ambiguous, and future contributors may confuse market lab scaffolds with execution systems.
+- Raw local artifacts may persist beyond retention policy if purge steps are not operationally checked.
+- Rotation evidence may expose local path details if redaction rules are not followed.
+- See docs/governance/ADR_DIFFERENTIATION_GUIDE.md for cross-cutting risks.
 
 ## Follow-ups
 
-Review this ADR at phase gates, keep linked ledgers current, and open follow-up tasks only within approved boundaries.
+- Add retention verification to redaction checklist updates for local storage artifacts.
+- Keep credential rotation evidence as reviewed summaries, not raw logs or local paths.
+- Review at phase gates; keep linked ledgers current.

@@ -24,8 +24,12 @@ The repository favors reviewed artifacts, ADRs, ledgers, schemas, fixtures, and 
 
 ## Risks
 
-Documentation may drift, approval semantics may become ambiguous, and future contributors may confuse market lab scaffolds with execution systems.
+- Selected OS keychain backend may behave differently across developer workstations and break test reproducibility.
+- Secondary vault candidate may be inadequate for recovery if local custody assumptions change.
+- See docs/governance/ADR_DIFFERENTIATION_GUIDE.md for cross-cutting risks.
 
 ## Follow-ups
 
-Review this ADR at phase gates, keep linked ledgers current, and open follow-up tasks only within approved boundaries.
+- Validate keychain backend behavior with fake backends before any real secret adapter is approved.
+- Keep secondary vault criteria documented before promoting it from candidate to implementation target.
+- Review at phase gates; keep linked ledgers current.

@@ -23,8 +23,12 @@ The repository favors reviewed artifacts, ADRs, ledgers, schemas, fixtures, and 
 
 ## Risks
 
-Documentation may drift, approval semantics may become ambiguous, and future contributors may confuse market lab scaffolds with execution systems.
+- Orchestrator language may expand into implied custody or execution authority if action verbs are not constrained.
+- Future adapter work may tempt direct credential retrieval before approval records and tests are in place.
+- See docs/governance/ADR_DIFFERENTIATION_GUIDE.md for cross-cutting risks.
 
 ## Follow-ups
 
-Review this ADR at phase gates, keep linked ledgers current, and open follow-up tasks only within approved boundaries.
+- Audit new orchestration docs for signing, transfer, deploy, and production-write language.
+- Link future adapter tasks back to approval records before implementation scaffolds are added.
+- Review at phase gates; keep linked ledgers current.

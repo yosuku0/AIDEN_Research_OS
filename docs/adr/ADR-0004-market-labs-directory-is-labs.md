@@ -23,8 +23,12 @@ The repository favors reviewed artifacts, ADRs, ledgers, schemas, fixtures, and 
 
 ## Risks
 
-Documentation may drift, approval semantics may become ambiguous, and future contributors may confuse market lab scaffolds with execution systems.
+- Lab artifacts may be mistaken for executable strategy or production configuration if labels are not explicit.
+- Cross-lab comparisons may become inconsistent without common fixture and evidence conventions.
+- See docs/governance/ADR_DIFFERENTIATION_GUIDE.md for cross-cutting risks.
 
 ## Follow-ups
 
-Review this ADR at phase gates, keep linked ledgers current, and open follow-up tasks only within approved boundaries.
+- Add lab artifact examples only when they include clear non-execution boundary language.
+- Align future lab evidence files with research-ledger and redaction checklist requirements.
+- Review at phase gates; keep linked ledgers current.
