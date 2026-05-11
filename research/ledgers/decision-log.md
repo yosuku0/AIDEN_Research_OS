@@ -34,6 +34,8 @@ docs/governance/LEDGER_SCHEMA.md
 | DL-0024 | langgraph concrete | accepted | Human | ADR-0011 | PR-0028 | Create concrete LangGraph HITL workflow with node definitions, timeouts, rollback triggers. | Keep ADR-level abstraction only | Implementation needs concrete node specs, checkpoint strategy, interrupt config. | Workflow doc: StateGraph nodes, persistence phases, timeout table, rollback triggers. | Revert to ADR-0011 only. |
 | DL-0025 | fixture completion | accepted | Human | ADR-0018 | PR-0029 | Add valid/invalid fixture pairs for all 11 migrated schemas. | Schema-only validation; no fixtures | Executable CI validation requires fixture pairs for pass/fail testing. | 22 fixture files created; CI validates all against schemas. | Remove 22 fixture files; revert CI to schema-only. |
 
+| DL-0026 | autonomy transition | proposed | Human | ADR-0019 | PR-0030-autonomy-transition | Introduce tiered autonomy transition (Tier 0/1/2) and execute first three migration phases toward Codex-led delivery. | full auto immediately; maintain all-human review | Balances automation throughput with non-negotiable safety boundaries and auditability. | Requires CI policy enforcement and ledger tracking for autonomy eligibility. | Revert ADR-0019 and disable autonomy eligibility checks in CI. |
+
 ## References
 
 docs/governance/APPROVAL_FLOW.md, docs/governance/LEDGER_SCHEMA.md

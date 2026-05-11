@@ -32,3 +32,4 @@ docs/governance/LEDGER_SCHEMA.md
 | PG-0022 | PH-3B | hold | Lab scaffold completion (Base/Perp/Prediction) requires Human review. | Human | pending | PR-0026; labs/**/README.md | Documentation only. | pending |
 | PG-0023 | PH-3C | hold | Integration layer (MCP matrix + LangGraph) requires Human review. | Human | pending | PR-0027; PR-0028 | Documentation only. | pending |
 | PG-0024 | PH-3D | hold | Fixture completion (22 fixture pairs) requires Human review. | Human | pending | PR-0029; fixtures/**/*.json | Abstract data only; no credentials. | pending |
+| PG-0025 | AUTONOMY-01 | hold | Tiered autonomy transition initialization requires Human review. | Human | pending | PR-0030; ADR-0019 | Tier 2 boundaries remain Human-gated. | pending |

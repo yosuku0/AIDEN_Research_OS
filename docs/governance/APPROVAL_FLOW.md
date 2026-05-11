@@ -70,3 +70,11 @@ If approval is revoked or incident is detected:
 ## References
 
 Cross-references: SAFETY.md, docs/system/PRODUCT_BOUNDARY.md, docs/system/EXECUTION_BOUNDARY.md, research/ledgers/approval-record.md, research/ledgers/phase-gate-record.md.
+
+## Autonomy Execution Gate (Tiered)
+
+To support Codex-led execution for remaining implementation phases, CI computes autonomy eligibility using `scripts/check-autonomy-eligibility.sh`.
+
+- `AUTO_EXECUTE_OK=true` when no Tier 2 restricted files changed and baseline governance checks pass.
+- `HUMAN_REVIEW_REQUIRED=true` when restricted governance boundary files are changed.
+- Any phase explicitly marked as human-required remains hold/pending until Human decision is recorded in `research/ledgers/approval-record.md`.
