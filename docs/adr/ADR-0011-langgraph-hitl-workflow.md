@@ -24,8 +24,14 @@ The repository favors reviewed artifacts, ADRs, ledgers, schemas, fixtures, and 
 
 ## Risks
 
-Documentation may drift, approval semantics may become ambiguous, and future contributors may confuse market lab scaffolds with execution systems.
+- Checkpoint persistence migration from in-memory to durable storage may lose approval state if migration is not versioned.
+- LangGraph API changes may break interrupt-based HITL workflow compatibility.
+- Timeout handling without durable checkpoint recovery may lose in-progress Human approval context.
+- See docs/governance/ADR_DIFFERENTIATION_GUIDE.md for cross-cutting risks.
 
 ## Follow-ups
 
-Review this ADR at phase gates, keep linked ledgers current, and open follow-up tasks only within approved boundaries.
+- Evaluate SQLite and Postgres checkpoint durability trade-offs before production readiness review.
+- Track LangGraph changelog entries that affect `interrupt()` and checkpoint APIs.
+- Define timeout duration policy for each restricted approval node type.
+- See docs/governance/ADR_DIFFERENTIATION_GUIDE.md for cross-cutting follow-up rules.

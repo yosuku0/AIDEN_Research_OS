@@ -25,3 +25,6 @@ docs/governance/LEDGER_SCHEMA.md
 | TP-0015 | RL-0001 | PR-0015-minimal-implementation | Required outputs for Minimal implementation are present and allowed-file scope is documented. | checked | AR-0015 | draft |
 | TP-0016 | RL-0001 | PR-0016-os-keychain-boundary | Required outputs for OS keychain boundary are present and allowed-file scope is documented. | checked | AR-0016 | draft |
 | TP-0017 | RL-0001 | PR-0017-os-keychain-adapter | Required outputs for OS keychain adapter task are present and allowed-file scope is documented. | checked | AR-0017 | draft |
+| TP-0018 | RL-0001 | PR-0018-approval-process-activation | APPROVAL_FLOW.md checklist and state transitions added; approval-record.md extended with criteria field. | pending | AR-0018 | draft |
+| TP-0019 | RL-0001 | PR-0019-ci-security-hardening | validate-governance.sh and governance-ci.yml no longer leak scan results to tmp/logs. | pending | AR-0019 | draft |
+| TP-0020 | RL-0001 | PR-0020-executable-test-migration | ADR-0018 created; CI validates all fixtures against schemas; unsafe cases fail as expected. | pending | AR-0020 | draft |

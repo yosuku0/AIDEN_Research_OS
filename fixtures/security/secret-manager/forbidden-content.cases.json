@@ -1,24 +1,10 @@
 {
-  "cases": [
-    {
-      "id": "FC-001",
-      "field": "credential_material",
-      "reason": "Credential material is forbidden."
-    },
-    {
-      "id": "FC-002",
-      "field": "local_secret_location",
-      "reason": "Local secret paths are forbidden."
-    },
-    {
-      "id": "FC-003",
-      "field": "provider_operation",
-      "reason": "Provider operations are outside scope."
-    },
-    {
-      "id": "FC-004",
-      "field": "execution_approval",
-      "reason": "Execution approval semantics are forbidden."
-    }
-  ]
+  "description": "unsafe config shape with forbidden fields but no credential-like literals",
+  "provider_type": "unapproved_provider",
+  "auth_method": "direct_value",
+  "credential_scope": "global",
+  "metadata_only": false,
+  "inline_credential_placeholder": "not-a-secret-placeholder",
+  "local_secret_path_placeholder": "local-path-placeholder",
+  "note": "This fixture should FAIL safe-config.schema.json validation because it uses disallowed fields and omits required safe reference fields."
 }

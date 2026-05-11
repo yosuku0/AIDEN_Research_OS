@@ -24,8 +24,14 @@ The repository favors reviewed artifacts, ADRs, ledgers, schemas, fixtures, and 
 
 ## Risks
 
-Documentation may drift, approval semantics may become ambiguous, and future contributors may confuse market lab scaffolds with execution systems.
+- Cloud model provider failure may stall high-precision synthesis tasks if no documented fallback path exists.
+- Local model misclassification may route complex synthesis to local inference and degrade research output quality.
+- Budget threshold ambiguity may cause either excessive cloud spend or premature workflow holds.
+- See docs/governance/ADR_DIFFERENTIATION_GUIDE.md for cross-cutting risks.
 
 ## Follow-ups
 
-Review this ADR at phase gates, keep linked ledgers current, and open follow-up tasks only within approved boundaries.
+- Define concrete budget thresholds before cloud escalation is enabled.
+- Validate the local model list against the target workstation constraints before operational use.
+- Review cloud provider failover options within the no-execution boundary.
+- See docs/governance/ADR_DIFFERENTIATION_GUIDE.md for cross-cutting follow-up rules.

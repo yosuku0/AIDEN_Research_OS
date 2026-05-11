@@ -23,7 +23,9 @@ jobs:
             docs/system/SYSTEM_OF_SYSTEMS.md
             docs/governance/SOURCE_OF_TRUTH.md
             docs/governance/LEDGER_SCHEMA.md
+            docs/governance/APPROVAL_FLOW.md
             research/ledgers/decision-log.md
+            research/ledgers/approval-record.md
             codex/templates/task-template.md
             scripts/validate-governance.sh
           )
@@ -86,12 +88,22 @@ jobs:
 
           exit "$failed"
 
-      - name: Validate safe config fixture
+      - name: Validate all fixtures against their schemas
         shell: bash
         run: |
-          check-jsonschema \
-            --schemafile schemas/secret-manager/safe-config.schema.json \
-            fixtures/security/secret-manager/no-secret.valid.json
+          failed=0
+          # Validate safe config fixture
+          if [ -f schemas/secret-manager/safe-config.schema.json ] && [ -f fixtures/security/secret-manager/no-secret.valid.json ]; then
+            if check-jsonschema \
+              --schemafile schemas/secret-manager/safe-config.schema.json \
+              fixtures/security/secret-manager/no-secret.valid.json; then
+              echo "OK: safe config fixture validates against schema"
+            else
+              echo "::error::Safe config fixture failed schema validation"
+              failed=1
+            fi
+          fi
+          exit "$failed"
 
   secret-scan:
     name: Secret Pattern Scan
@@ -118,14 +130,16 @@ jobs:
             'AIza[0-9A-Za-z_-]{35}'
             '0x[0-9a-fA-F]{40,}'
             '-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----'
-            'password[[:space:]]*[:=][[:space:]]*["'\''][^"'\'']{8,}["'\'']'
-            'api[_-]?key[[:space:]]*[:=][[:space:]]*["'\''][^"'\'']{8,}["'\'']'
+            'password[[:space:]]*[:=][[:space:]]*["'\'''][^"'\''']{8,}["'\''']'
+            'api[_-]?key[[:space:]]*[:=][[:space:]]*["'\'''][^"'\''']{8,}["'\''']'
           )
 
           for pattern in "${patterns[@]}"; do
+            # SECURITY FIX: Use file path only, do not output matched content to logs
             if matches=$(grep -RInE --exclude-dir=.git --exclude-dir=.venv --exclude-dir=__pycache__ -- "$pattern" "${scan_paths[@]}" 2>/dev/null); then
-              echo "::error::Secret-like pattern detected for: $pattern"
-              echo "$matches"
+              echo "::error::Secret-like pattern detected in governed file"
+              # Output file paths only (first field), not the matched content
+              echo "$matches" | cut -d: -f1 | sort -u | sed 's/^/  file: /'
               failed=1
             fi
           done
@@ -146,21 +160,35 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Warn when all approvals remain pending
+      - name: Check approval record completeness
         shell: bash
         run: |
           approval_file="research/ledgers/approval-record.md"
 
           if [ ! -f "$approval_file" ]; then
-            echo "::warning file=$approval_file::Approval record is missing"
-            exit 0
+            echo "::error file=$approval_file::Approval record is missing"
+            exit 1
           fi
 
           total=$(grep -Ec '^\| AR-[0-9]+' "$approval_file" || true)
-          pending=$(grep -Ec '^\| AR-[0-9]+.*\|[[:space:]]*pending[[:space:]]*\|[[:space:]]*$' "$approval_file" || true)
+          pending=$(grep -Ec '^\| AR-[0-9]+.*\|[[:space:]]*pending[[:space:]]*\|' "$approval_file" || true)
+          approved=$(grep -Ec '^\| AR-[0-9]+.*\|[[:space:]]*approve[[:space:]]*\|' "$approval_file" || true)
+
+          if [ "$total" -eq 0 ]; then
+            echo "::error file=$approval_file::No approval records found"
+            exit 1
+          fi
+
+          echo "Approval status: $approved approved, $pending pending, $total total"
 
           if [ "$total" -gt 0 ] && [ "$total" -eq "$pending" ]; then
             echo "::warning file=$approval_file::All $total approval records remain pending. Human approval is required before merge."
-          else
-            echo "Approval status check completed: $pending of $total records pending."
           fi
+
+          # Check that approval_criteria_met field exists (post-audit fix validation)
+          if ! grep -q "approval_criteria_met" "$approval_file"; then
+            echo "::error file=$approval_file::approval_criteria_met field missing - run audit fix H-001"
+            exit 1
+          fi
+
+          echo "Approval record structure validated."
