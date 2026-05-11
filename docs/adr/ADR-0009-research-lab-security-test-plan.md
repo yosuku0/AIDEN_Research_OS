@@ -23,8 +23,12 @@ The repository favors reviewed artifacts, ADRs, ledgers, schemas, fixtures, and 
 
 ## Risks
 
-Documentation may drift, approval semantics may become ambiguous, and future contributors may confuse market lab scaffolds with execution systems.
+- Documentation-only tests may create false assurance if no executable validation is introduced later.
+- Unsafe fixtures may accidentally include credential-like literals if examples are not abstracted.
+- See docs/governance/ADR_DIFFERENTIATION_GUIDE.md for cross-cutting risks.
 
 ## Follow-ups
 
-Review this ADR at phase gates, keep linked ledgers current, and open follow-up tasks only within approved boundaries.
+- Migrate safe fixture validation through ADR-0018 without adding runtime behavior tests.
+- Keep unsafe fixture examples structural and abstract, not credential-shaped.
+- Review at phase gates; keep linked ledgers current.

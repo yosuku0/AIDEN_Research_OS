@@ -184,7 +184,6 @@ check_secret_scan() {
   if [[ "$found" == false ]]; then
     pass "no secret-like patterns found"
   fi
-
 }
 
 check_approval_status() {

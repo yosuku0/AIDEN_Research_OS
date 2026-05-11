@@ -24,8 +24,12 @@ The repository favors reviewed artifacts, ADRs, ledgers, schemas, fixtures, and 
 
 ## Risks
 
-Documentation may drift, approval semantics may become ambiguous, and future contributors may confuse market lab scaffolds with execution systems.
+- MCP tool definitions may expand into execution-capable operations without matching ADR review.
+- Server-side authorization assumptions may conflict with host-owned permission enforcement.
+- See docs/governance/ADR_DIFFERENTIATION_GUIDE.md for cross-cutting risks.
 
 ## Follow-ups
 
-Review this ADR at phase gates, keep linked ledgers current, and open follow-up tasks only within approved boundaries.
+- Maintain an explicit tool allowlist before adding any MCP server implementation.
+- Require audit event fields for each approved tool invocation in future MCP tasks.
+- Review at phase gates; keep linked ledgers current.

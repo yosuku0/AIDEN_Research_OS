@@ -24,8 +24,12 @@ The repository favors reviewed artifacts, ADRs, ledgers, schemas, fixtures, and 
 
 ## Risks
 
-Documentation may drift, approval semantics may become ambiguous, and future contributors may confuse market lab scaffolds with execution systems.
+- Narrow schema and fixture work may be mistaken for approval to implement custody behavior.
+- Scope creep may add provider-specific fields before the secret manager boundary is finalized.
+- See docs/governance/ADR_DIFFERENTIATION_GUIDE.md for cross-cutting risks.
 
 ## Follow-ups
 
-Review this ADR at phase gates, keep linked ledgers current, and open follow-up tasks only within approved boundaries.
+- Keep implementation tasks limited to schemas, fixtures, and governance checks until Human approval changes scope.
+- Recheck safe-config fields against PRODUCT_BOUNDARY.md before adding provider metadata.
+- Review at phase gates; keep linked ledgers current.

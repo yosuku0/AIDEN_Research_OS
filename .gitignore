@@ -1,21 +1,29 @@
-.codex/
-CODEX_PROMPT.md
-DIRECTORY_TREE.md
+# === AIDEN Research OS ===
+# Distribution packages (not source)
+codex-app-package/
+*.zip
 
-# Local-only raw artifacts and quarantine workspaces
-raw/
-local/
-quarantine/
-tmp/
-
-# Environment and secret-bearing files
+# Local environments
 .env
 .env.*
-*.pem
-*.key
-*.p12
-*.pfx
 
-# OS/editor noise
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+
+# OS
 .DS_Store
 Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+/tmp/
+*.tmp

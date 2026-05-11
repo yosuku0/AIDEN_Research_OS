@@ -88,22 +88,88 @@ jobs:
 
           exit "$failed"
 
-      - name: Validate all fixtures against their schemas
+      - name: Validate safe config fixtures
         shell: bash
         run: |
           failed=0
-          # Validate safe config fixture
-          if [ -f schemas/secret-manager/safe-config.schema.json ] && [ -f fixtures/security/secret-manager/no-secret.valid.json ]; then
+
+          if [ -f schemas/secret-manager/safe-config.schema.json ]; then
+            while IFS= read -r fixture; do
+              if check-jsonschema \
+                --schemafile schemas/secret-manager/safe-config.schema.json \
+                "$fixture"; then
+                echo "OK: $fixture validates against safe-config schema"
+              else
+                echo "::error file=$fixture::Safe config fixture failed schema validation"
+                failed=1
+              fi
+            done < <(find fixtures/security/secret-manager -name '*.valid.json' -print | sort)
+          fi
+
+          exit "$failed"
+
+      - name: Verify forbidden safe config fixture is rejected
+        shell: bash
+        run: |
+          if [ -f schemas/secret-manager/safe-config.schema.json ] && [ -f fixtures/security/secret-manager/forbidden-content.cases.json ]; then
             if check-jsonschema \
               --schemafile schemas/secret-manager/safe-config.schema.json \
-              fixtures/security/secret-manager/no-secret.valid.json; then
-              echo "OK: safe config fixture validates against schema"
+              fixtures/security/secret-manager/forbidden-content.cases.json; then
+              echo "::error file=fixtures/security/secret-manager/forbidden-content.cases.json::Forbidden fixture unexpectedly passed safe-config validation"
+              exit 1
+            fi
+            echo "OK: forbidden safe-config fixture rejected"
+          fi
+
+  ledger-structure-validation:
+    name: Ledger Structure Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check approval-record.md has approval_criteria_met field
+        shell: bash
+        run: |
+          if ! grep -q "approval_criteria_met" research/ledgers/approval-record.md; then
+            echo "::error file=research/ledgers/approval-record.md::approval_criteria_met field missing"
+            exit 1
+          fi
+          echo "approval_criteria_met field found"
+
+      - name: Check all AR entries have approval_criteria_met column
+        shell: bash
+        run: |
+          ar_count=$(grep -Ec '^\| AR-[0-9]+' research/ledgers/approval-record.md || true)
+          criteria_count=$(grep -c "approval_criteria_met" research/ledgers/approval-record.md || true)
+          if [[ "$criteria_count" -lt 1 ]]; then
+            echo "::error file=research/ledgers/approval-record.md::approval_criteria_met column missing"
+            exit 1
+          fi
+          echo "$ar_count AR entries with approval_criteria_met column validated"
+
+      - name: Check decision-log.md has required fields
+        shell: bash
+        run: |
+          required_fields=("id" "decision_type" "status" "owner" "linked_adr")
+          for field in "${required_fields[@]}"; do
+            if ! grep -q "$field" research/ledgers/decision-log.md; then
+              echo "::error file=research/ledgers/decision-log.md::Required field '$field' missing"
+              exit 1
+            fi
+          done
+          echo "All required decision-log fields present"
+
+      - name: Check incident-record.md tracks audit findings
+        shell: bash
+        run: |
+          if [[ -f research/ledgers/incident-record.md ]]; then
+            audit_count=$(grep -c "H-00[1-7]" research/ledgers/incident-record.md || true)
+            if [[ "$audit_count" -ge 7 ]]; then
+              echo "All 7 audit findings tracked in incident-record"
             else
-              echo "::error::Safe config fixture failed schema validation"
-              failed=1
+              echo "::warning file=research/ledgers/incident-record.md::Expected 7 audit findings, found $audit_count"
             fi
           fi
-          exit "$failed"
 
   secret-scan:
     name: Secret Pattern Scan

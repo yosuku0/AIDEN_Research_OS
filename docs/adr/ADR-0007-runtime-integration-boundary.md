@@ -23,8 +23,12 @@ The repository favors reviewed artifacts, ADRs, ledgers, schemas, fixtures, and 
 
 ## Risks
 
-Documentation may drift, approval semantics may become ambiguous, and future contributors may confuse market lab scaffolds with execution systems.
+- Research artifacts may be wired into runtime systems before a reviewed interface contract exists.
+- Boundary bypass may occur if helper scripts are treated as deployment or production-write tooling.
+- See docs/governance/ADR_DIFFERENTIATION_GUIDE.md for cross-cutting risks.
 
 ## Follow-ups
 
-Review this ADR at phase gates, keep linked ledgers current, and open follow-up tasks only within approved boundaries.
+- Require a new ADR before any runtime interface, deployment target, or provider integration is introduced.
+- Keep CI checks focused on governance artifacts until runtime boundary approval exists.
+- Review at phase gates; keep linked ledgers current.

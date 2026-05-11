@@ -24,8 +24,12 @@ The repository favors reviewed artifacts, ADRs, ledgers, schemas, fixtures, and 
 
 ## Risks
 
-Documentation may drift, approval semantics may become ambiguous, and future contributors may confuse market lab scaffolds with execution systems.
+- Offline or local-only artifacts may diverge from reviewed GitHub records and bypass ledger traceability.
+- Misconfigured CODEOWNERS may allow governance changes without the intended Human review path.
+- See docs/governance/ADR_DIFFERENTIATION_GUIDE.md for cross-cutting risks.
 
 ## Follow-ups
 
-Review this ADR at phase gates, keep linked ledgers current, and open follow-up tasks only within approved boundaries.
+- Verify CODEOWNERS coverage before any phase gate is considered ready for merge.
+- Keep raw local artifacts out of GitHub and promote only reviewed summaries into ledgers.
+- Review at phase gates; keep linked ledgers current.

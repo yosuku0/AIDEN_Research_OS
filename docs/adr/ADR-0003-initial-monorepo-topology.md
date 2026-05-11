@@ -23,8 +23,12 @@ The repository favors reviewed artifacts, ADRs, ledgers, schemas, fixtures, and 
 
 ## Risks
 
-Documentation may drift, approval semantics may become ambiguous, and future contributors may confuse market lab scaffolds with execution systems.
+- Premature repository splitting may break cross-ledger traceability between ADRs, tasks, schemas, and fixtures.
+- Monorepo growth may blur ownership boundaries if package-level governance is not added before runtime work begins.
+- See docs/governance/ADR_DIFFERENTIATION_GUIDE.md for cross-cutting risks.
 
 ## Follow-ups
 
-Review this ADR at phase gates, keep linked ledgers current, and open follow-up tasks only within approved boundaries.
+- Reassess package ownership rules before adding implementation packages beyond governance scaffolding.
+- Add topology notes to task templates when new top-level directories are proposed.
+- Review at phase gates; keep linked ledgers current.

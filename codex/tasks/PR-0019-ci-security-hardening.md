@@ -37,9 +37,9 @@ TRUE
 
 ## validation_steps
 
-- Confirm validate-governance.sh does not reference /tmp/aiden-secret-scan.txt
+- Confirm validate-governance.sh does not use a temporary scan-results file
 - Confirm grep match output is piped through cut -d: -f1 (file paths only)
-- Confirm rm -f /tmp/aiden-secret-scan.txt cleanup exists
+- Confirm no cleanup step is needed because scan results are not written to disk
 - Run bash scripts/validate-governance.sh locally and confirm passes
 
 ## incident_trigger

@@ -26,8 +26,12 @@ The repository favors reviewed artifacts, ADRs, ledgers, schemas, fixtures, and 
 
 ## Risks
 
-Documentation may drift, approval semantics may become ambiguous, and future contributors may confuse market lab scaffolds with execution systems.
+- Product identity may collapse into a single-bot framing, making the control-plane boundary harder to review.
+- Base-only naming or examples may imply chain-specific execution authority that the project does not grant.
+- See docs/governance/ADR_DIFFERENTIATION_GUIDE.md for cross-cutting risks.
 
 ## Follow-ups
 
-Review this ADR at phase gates, keep linked ledgers current, and open follow-up tasks only within approved boundaries.
+- Review README and product-boundary language whenever new public-facing docs are added.
+- Keep Base references subordinate to the broader AIDEN Research OS identity in future artifacts.
+- Review at phase gates; keep linked ledgers current.
