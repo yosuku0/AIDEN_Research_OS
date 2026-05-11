@@ -1,11 +1,14 @@
 # === AIDEN Research OS ===
-# Distribution packages (not source)
-codex-app-package/
-*.zip
-
 # Local environments
 .env
 .env.*
+
+# Distribution packages
+codex-app-package/
+*.zip
+
+# User data outputs (phantom files)
+mnt/user-data/
 
 # Python
 __pycache__/
@@ -13,6 +16,9 @@ __pycache__/
 *$py.class
 .venv/
 venv/
+*.egg-info/
+dist/
+build/
 
 # OS
 .DS_Store
@@ -27,3 +33,12 @@ Thumbs.db
 # Temporary files
 /tmp/
 *.tmp
+
+# Local audit logs (never commit)
+local/
+*.jsonl
+
+# Coverage
+.coverage
+coverage.xml
+htmlcov/

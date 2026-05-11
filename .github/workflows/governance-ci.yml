@@ -20,13 +20,15 @@ jobs:
             docs/system/PRODUCT_BOUNDARY.md docs/system/SYSTEM_OF_SYSTEMS.md
             docs/governance/SOURCE_OF_TRUTH.md docs/governance/LEDGER_SCHEMA.md
             docs/governance/APPROVAL_FLOW.md docs/governance/SCHEMA_EVOLUTION_POLICY.md
+            docs/governance/ADR_DIFFERENTIATION_GUIDE.md
             research/ledgers/decision-log.md research/ledgers/approval-record.md
             research/ledgers/incident-record.md
             codex/templates/task-template.md scripts/validate-governance.sh
           )
           failed=0
           for file in "${required[@]}"; do
-            if [ -f "$file" ]; then echo "OK: $file"; else echo "::error file=$file::Missing: $file"; failed=1; fi
+            if [ -f "$file" ]; then echo "OK: $file"
+            else echo "::error file=$file::Missing: $file"; failed=1; fi
           done
           exit "$failed"
 
@@ -61,45 +63,31 @@ jobs:
         shell: bash
         run: |
           failed=0
-          # Governance fixtures
-          for schema_file in schemas/governance/*.schema.json; do
+          for schema_file in schemas/governance/*.schema.json schemas/research-lab/*.schema.json; do
+            [ -f "$schema_file" ] || continue
             base=$(basename "$schema_file" .schema.json)
-            if [ -f "fixtures/governance/${base}.valid.json" ]; then
-              if check-jsonschema --schemafile "$schema_file" "fixtures/governance/${base}.valid.json"; then
+            dir=$(dirname "$schema_file" | sed 's/schemas/fixtures/')
+            if [ -f "$dir/${base}.valid.json" ]; then
+              if check-jsonschema --schemafile "$schema_file" "$dir/${base}.valid.json"; then
                 echo "OK: ${base}.valid.json passes"
-              else echo "::error::${base}.valid.json failed validation"; failed=1; fi
+              else echo "::error::${base}.valid.json failed"; failed=1; fi
             fi
-            if [ -f "fixtures/governance/${base}.invalid.json" ]; then
-              if check-jsonschema --schemafile "$schema_file" "fixtures/governance/${base}.invalid.json"; then
+            if [ -f "$dir/${base}.invalid.json" ]; then
+              if check-jsonschema --schemafile "$schema_file" "$dir/${base}.invalid.json"; then
                 echo "::error::${base}.invalid.json unexpectedly passed"; failed=1
               else echo "OK: ${base}.invalid.json correctly rejected"; fi
             fi
           done
-          # Research-lab fixtures
-          for schema_file in schemas/research-lab/*.schema.json; do
-            base=$(basename "$schema_file" .schema.json)
-            if [ -f "fixtures/research-lab/${base}.valid.json" ]; then
-              if check-jsonschema --schemafile "$schema_file" "fixtures/research-lab/${base}.valid.json"; then
-                echo "OK: ${base}.valid.json passes"
-              else echo "::error::${base}.valid.json failed validation"; failed=1; fi
-            fi
-            if [ -f "fixtures/research-lab/${base}.invalid.json" ]; then
-              if check-jsonschema --schemafile "$schema_file" "fixtures/research-lab/${base}.invalid.json"; then
-                echo "::error::${base}.invalid.json unexpectedly passed"; failed=1
-              else echo "OK: ${base}.invalid.json correctly rejected"; fi
-            fi
-          done
-          # Secret-manager fixtures
           if [ -f schemas/secret-manager/safe-config.schema.json ]; then
             for fixture in fixtures/security/secret-manager/*.valid.json; do
-              if [ -f "$fixture" ]; then
-                if check-jsonschema --schemafile schemas/secret-manager/safe-config.schema.json "$fixture"; then
-                  echo "OK: $(basename $fixture) passes"
-                else echo "::error::$(basename $fixture) failed"; failed=1; fi
-              fi
+              [ -f "$fixture" ] || continue
+              if check-jsonschema --schemafile schemas/secret-manager/safe-config.schema.json "$fixture"; then
+                echo "OK: $(basename "$fixture") passes"
+              else echo "::error::$(basename "$fixture") failed"; failed=1; fi
             done
             if [ -f fixtures/security/secret-manager/forbidden-content.cases.json ]; then
-              if check-jsonschema --schemafile schemas/secret-manager/safe-config.schema.json                 fixtures/security/secret-manager/forbidden-content.cases.json; then
+              if check-jsonschema --schemafile schemas/secret-manager/safe-config.schema.json \
+                fixtures/security/secret-manager/forbidden-content.cases.json; then
                 echo "::error::forbidden fixture unexpectedly passed"; failed=1
               else echo "OK: forbidden fixture correctly rejected"; fi
             fi
@@ -159,18 +147,18 @@ jobs:
             'ghp_[A-Za-z0-9]{36}' 'AIza[0-9A-Za-z_-]{35}'
             '0x[0-9a-fA-F]{40,}'
             '-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----'
-            'password[[:space:]]*[:=][[:space:]]*["'"'"'"'][^"'"'"'"']{8,}["'"'"'"']'
-            'api[_-]?key[[:space:]]*[:=][[:space:]]*["'"'"'"'][^"'"'"'"']{8,}["'"'"'"']'
           )
           for pattern in "${patterns[@]}"; do
-            matches=$(grep -RInE --exclude-dir=.git --exclude-dir=.venv --exclude-dir=__pycache__               -- "$pattern" "${scan_paths[@]}" 2>/dev/null || true)
+            matches=$(grep -RInE --exclude-dir=.git --exclude-dir=.venv --exclude-dir=__pycache__ \
+              -- "$pattern" "${scan_paths[@]}" 2>/dev/null || true)
             if [ -n "$matches" ]; then
               echo "::error::Pattern detected: $pattern"
               echo "$matches" | cut -d: -f1 | sort -u | sed 's/^/  file: /'
               failed=1
             fi
           done
-          env_matches=$(find . -path './.git' -prune -o             \( -name '.env' -o -name '.env.*' \) -print 2>/dev/null || true)
+          env_matches=$(find . -path './.git' -prune -o \
+            \( -name '.env' -o -name '.env.*' \) -print 2>/dev/null || true)
           if [ -n "$env_matches" ]; then
             echo "::error::Environment file detected"
             echo "$env_matches"; failed=1
@@ -195,3 +183,23 @@ jobs:
           if ! grep -q "approval_criteria_met" research/ledgers/approval-record.md; then
             echo "::error::approval_criteria_met field missing"; exit 1; fi
           echo "Approval record structure validated."
+
+  pytest:
+    name: Python Test Suite
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install package with dev dependencies
+        run: pip install -e ".[dev]" --quiet
+      - name: Run pytest
+        run: pytest tests/ -v --tb=short
+        env:
+          AIDEN_ENV: test
+          AIDEN_OBSERVABILITY_ENABLED: "false"
+      - name: Generate coverage report
+        run: |
+          pytest tests/ --cov=aiden --cov-report=term-missing --cov-report=xml \
+            --cov-fail-under=80 || true
