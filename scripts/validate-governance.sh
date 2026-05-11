@@ -36,10 +36,12 @@ check_artifact_existence() {
     README.md SAFETY.md docs/system/PRODUCT_BOUNDARY.md docs/system/SYSTEM_OF_SYSTEMS.md
     docs/governance/SOURCE_OF_TRUTH.md docs/governance/LEDGER_SCHEMA.md
     docs/governance/APPROVAL_FLOW.md docs/governance/SCHEMA_EVOLUTION_POLICY.md
+    docs/governance/AUTONOMY_TIER_POLICY.md
     docs/governance/ADR_DIFFERENTIATION_GUIDE.md
     research/ledgers/decision-log.md research/ledgers/approval-record.md
     research/ledgers/incident-record.md research/ledgers/phase-gate-record.md
     codex/templates/task-template.md scripts/validate-governance.sh
+    scripts/check-autonomy-eligibility.sh
   )
   local file; for file in "${required[@]}"; do
     if [[ -f "$file" ]]; then pass "$file"; else fail "$file is missing"; fi

@@ -35,6 +35,8 @@ Each `approval_criteria_met` field is a JSON array of 8 booleans corresponding t
 | AR-0019 | CI security hardening | Codex | Human | Secret scan temp file fix and CI secure output | pending | PG-0019 | hold | Apply audit fix H-003. | [false,false,false,false,false,false,false,false] | pending |
 | AR-0020 | executable test migration | Codex | Human | Documentation-only to executable test transition plan | pending | PG-0020 | hold | Apply audit fix H-002. | [false,false,false,false,false,false,false,false] | pending |
 
+| AR-0021 | autonomy transition approval | Codex | Human | Tiered autonomy rollout (Phase 1-3 execution enablement) | pending | PG-0025 | hold | Human validation of governance boundary preservation required. | [false,false,false,false,false,false,false,false] | pending |
+
 ## Post-Approval Update Template
 
 When an AR transitions from "hold" to "approve", update the row using this format:

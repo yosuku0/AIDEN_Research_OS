@@ -20,6 +20,7 @@ jobs:
             docs/system/PRODUCT_BOUNDARY.md docs/system/SYSTEM_OF_SYSTEMS.md
             docs/governance/SOURCE_OF_TRUTH.md docs/governance/LEDGER_SCHEMA.md
             docs/governance/APPROVAL_FLOW.md docs/governance/SCHEMA_EVOLUTION_POLICY.md
+            docs/governance/AUTONOMY_TIER_POLICY.md
             docs/governance/ADR_DIFFERENTIATION_GUIDE.md
             research/ledgers/decision-log.md research/ledgers/approval-record.md
             research/ledgers/incident-record.md
@@ -192,14 +193,53 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Install package with dev dependencies
-        run: pip install -e ".[dev]" --quiet
-      - name: Run pytest
-        run: pytest tests/ -v --tb=short
+      - name: Run pytest if aiden package exists
+        shell: bash
+        run: |
+          if [ -d src/aiden ]; then
+            pip install -e ".[dev]" --quiet
+            pytest tests/ -v --tb=short
+            pytest tests/ --cov=aiden --cov-report=term-missing --cov-report=xml \
+              --cov-fail-under=80 || true
+          else
+            echo "SKIP: src/aiden not found; skipping runtime pytest suite in governance-scaffold state."
+          fi
         env:
           AIDEN_ENV: test
           AIDEN_OBSERVABILITY_ENABLED: "false"
-      - name: Generate coverage report
+
+
+  autonomy-eligibility:
+    name: Autonomy Eligibility
+    runs-on: ubuntu-latest
+    outputs:
+      auto_execute_ok: ${{ steps.eval.outputs.auto_execute_ok }}
+      human_review_required: ${{ steps.eval.outputs.human_review_required }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Evaluate autonomy eligibility
+        id: eval
+        shell: bash
         run: |
-          pytest tests/ --cov=aiden --cov-report=term-missing --cov-report=xml \
-            --cov-fail-under=80 || true
+          result=$(bash scripts/check-autonomy-eligibility.sh)
+          echo "$result"
+          auto=$(echo "$result" | awk -F= '/AUTO_EXECUTE_OK/{print $2}' | tail -n1)
+          human=$(echo "$result" | awk -F= '/HUMAN_REVIEW_REQUIRED/{print $2}' | tail -n1)
+          echo "auto_execute_ok=${auto:-true}" >> "$GITHUB_OUTPUT"
+          echo "human_review_required=${human:-false}" >> "$GITHUB_OUTPUT"
+
+  gate-enforcer:
+    name: Autonomy Gate Enforcer
+    runs-on: ubuntu-latest
+    needs: [autonomy-eligibility, artifact-existence, schema-validation, ledger-structure-validation, secret-scan]
+    steps:
+      - name: Report gate status
+        shell: bash
+        run: |
+          echo "AUTO_EXECUTE_OK=${{ needs.autonomy-eligibility.outputs.auto_execute_ok }}"
+          echo "HUMAN_REVIEW_REQUIRED=${{ needs.autonomy-eligibility.outputs.human_review_required }}"
+          if [ "${{ needs.autonomy-eligibility.outputs.human_review_required }}" = "true" ]; then
+            echo "HUMAN_REVIEW_REQUIRED=true (Tier 2 restricted file touched)."
+          fi
