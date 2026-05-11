@@ -1,4 +1,14 @@
 # Governance ownership
+# INSTRUCTION: Replace @repo-owner with the actual GitHub username or team
+# of the Human final approver before first use.
+#
+# Example replacements:
+#   * @your-username
+#   * @your-org/human-approvers-team
+#
+# Audit fix H-007: The placeholder @repo-owner must be replaced before
+# any phase gate can transition from "hold" to "approve".
+
 * @repo-owner
 /docs/ @repo-owner
 /research/ @repo-owner
