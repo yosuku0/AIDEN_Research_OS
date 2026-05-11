@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SecretManagerSafeConfig",
+  "description": "Metadata-only secret reference configuration. MUST NOT contain credential values, local paths, or provider operation fields.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "secret_reference_id",
+    "storage_candidate",
+    "custody_owner",
+    "approval_reference",
+    "incident_blocker"
+  ],
+  "properties": {
+    "secret_reference_id": {
+      "type": "string",
+      "pattern": "^ref_[a-z0-9_]+$",
+      "maxLength": 64,
+      "description": "Opaque reference ID only. Never the credential value itself."
+    },
+    "storage_candidate": {
+      "type": "string",
+      "enum": [
+        "os_keychain_primary",
+        "local_encrypted_vault_secondary",
+        "password_manager_hold",
+        "hardware_backed_future"
+      ],
+      "description": "Selected storage backend. Plaintext is never an allowed value."
+    },
+    "custody_owner": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human owner of this secret. Must not be 'AI', 'Codex', or 'AIDEN'.",
+      "not": {
+        "enum": ["AI", "Codex", "AIDEN", "codex", "aiden", "ai", "system"]
+      }
+    },
+    "approval_reference": {
+      "type": "string",
+      "pattern": "^AR-[0-9]{4}$",
+      "description": "Links to the human approval record for this secret registration"
+    },
+    "incident_blocker": {
+      "type": "boolean",
+      "description": "Whether an open incident blocks operations on this secret"
+    },
+    "rotation_schedule_days": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 365,
+      "description": "Optional: rotation frequency in days. Enforced by SOP, not runtime."
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "Human-readable notes. Forbidden: credential values, tokens, paths, passwords.",
+      "not": {
+        "pattern": "(sk-[a-zA-Z0-9]{10,}|0x[0-9a-fA-F]{40,}|password|secret|api[_\\-]?key|token|bearer|private[_\\-]?key|/home/|C:\\\\Users\\\\|-----BEGIN)"
+      }
+    }
+  }
+}

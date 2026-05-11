@@ -1,0 +1,10 @@
+{
+  "id": "SR-0001",
+  "simulation_type": "dex-liquidity",
+  "hypothesis": "Base DEX liquidity concentrated in top 5 pools.",
+  "result": "Confirmed: 78% TVL in 5 pools.",
+  "confidence": "high",
+  "methodology": "On-chain data analysis (simulated).",
+  "timestamp": "2026-05-11T10:00:00Z",
+  "data_summary": "Analyzed 42 pools over 30 days."
+}

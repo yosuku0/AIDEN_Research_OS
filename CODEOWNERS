@@ -1,0 +1,40 @@
+# AIDEN Research OS — CODEOWNERS
+#
+# Primary owner is required for ALL paths.
+# Security-critical paths require BOTH primary and a secondary reviewer.
+#
+# Rationale: audit finding HIGH-01 — single CODEOWNER is a single point of failure.
+# Resolution: Security-critical boundaries require 2-person review.
+# ADR reference: ADR-0009 (Research Lab Security Test Plan)
+#
+# Secondary reviewer (@security-reviewer) should be a trusted human who is NOT
+# the primary operator of AIDEN. Can be a colleague, collaborator, or second
+# GitHub account you control that you treat as a separate review identity.
+# Update @security-reviewer to the actual account before merging this file.
+
+# ── Default: primary owner required for all files ──────────────────────────
+*                                   @repo-owner
+
+# ── Governance artifacts: primary required ──────────────────────────────────
+/docs/                              @repo-owner
+/research/                          @repo-owner
+/codex/                             @repo-owner
+/schemas/                           @repo-owner
+/fixtures/                          @repo-owner
+
+# ── SECURITY-CRITICAL: requires primary + secondary approval ────────────────
+# These paths define the hard boundaries and approval semantics. A compromise
+# here undermines the entire governance model.
+
+SAFETY.md                           @repo-owner @security-reviewer
+AGENTS.md                           @repo-owner @security-reviewer
+/docs/system/PRODUCT_BOUNDARY.md    @repo-owner @security-reviewer
+/docs/system/EXECUTION_BOUNDARY.md  @repo-owner @security-reviewer
+/docs/security/                     @repo-owner @security-reviewer
+/research/ledgers/approval-record.md @repo-owner @security-reviewer
+/research/ledgers/phase-gate-record.md @repo-owner @security-reviewer
+/.github/workflows/                 @repo-owner @security-reviewer
+/.github/CODEOWNERS                 @repo-owner @security-reviewer
+/scripts/validate-governance.sh     @repo-owner @security-reviewer
+/schemas/governance/phase-gate-record.schema.json @repo-owner @security-reviewer
+/schemas/secret-manager/            @repo-owner @security-reviewer

@@ -1,0 +1,13 @@
+{
+  "id": "DL-0021",
+  "decision_type": "schema migration",
+  "status": "accepted",
+  "owner": "Human",
+  "linked_adr": "ADR-0018",
+  "linked_codex_task": "PR-0024",
+  "decision": "Migrate all remaining schemas to 2020-12 with unevaluatedProperties.",
+  "alternatives": "Stay on Draft-07; partial migration",
+  "rationale": "Eliminates technical debt and enables modern schema features.",
+  "consequences": "All 11 schemas updated; fixtures validated.",
+  "rollback_plan": "Revert schemas to Draft-07 with git history."
+}

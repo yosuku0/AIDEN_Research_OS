@@ -1,7 +1,7 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aiden-research-os/schemas/task-promotion-record.schema.json",
   "type": "object",
-  "additionalProperties": false,
   "required": [
     "id",
     "research_source",
@@ -10,35 +10,41 @@
     "redaction_status",
     "approval_reference",
     "status"
-  ],
+],
   "properties": {
     "id": {
-      "type": "string",
-      "minLength": 1
+        "type": "string",
+        "pattern": "^TP-[0-9]+$"
     },
     "research_source": {
-      "type": "string",
-      "minLength": 1
+        "type": "string"
     },
     "codex_task": {
-      "type": "string",
-      "minLength": 1
+        "type": "string"
     },
     "promotion_criteria": {
-      "type": "string",
-      "minLength": 1
+        "type": "string"
     },
     "redaction_status": {
-      "type": "string",
-      "minLength": 1
+        "type": "string"
     },
     "approval_reference": {
-      "type": "string",
-      "minLength": 1
+        "type": "string"
     },
     "status": {
-      "type": "string",
-      "minLength": 1
+        "type": "string",
+        "enum": [
+            "draft",
+            "ready_for_review",
+            "approved",
+            "rejected"
+        ]
     }
-  }
+},
+  "patternProperties": {
+    "^x-[a-z0-9_-]+$": {
+      "description": "Experimental extension field. Must start with x-. Must not contain credential values or local paths."
+    }
+  },
+  "unevaluatedProperties": false
 }

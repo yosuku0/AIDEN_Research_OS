@@ -1,0 +1,8 @@
+{
+  "id": "OQ-0003",
+  "question": "When to migrate evidence-bundle.schema.json to 2020-12?",
+  "context": " evidence-bundle is research-lab schema; migration order TBD.",
+  "status": "open",
+  "owner": "Human",
+  "linked_adr": "ADR-0018"
+}

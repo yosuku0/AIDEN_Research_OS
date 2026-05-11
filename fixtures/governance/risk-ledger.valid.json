@@ -1,0 +1,9 @@
+{
+  "id": "RK-0002",
+  "risk": "Schema version drift after 2020-12 migration.",
+  "impact": "MEDIUM",
+  "likelihood": "possible",
+  "mitigation": "Pin schema versions in CI; review at phase gates.",
+  "owner": "Human",
+  "status": "mitigated"
+}

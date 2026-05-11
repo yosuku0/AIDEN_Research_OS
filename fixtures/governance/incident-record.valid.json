@@ -1,0 +1,14 @@
+{
+  "id": "INC-009",
+  "scope": "SCHEMA_MIGRATION",
+  "finding_id": "H-004",
+  "description": "All schemas now on 2020-12.",
+  "severity": "MEDIUM",
+  "detected_at": "2026-05-11T00:00:00Z",
+  "reported_by": "Codex Phase 3",
+  "status": "resolved",
+  "resolution_plan": "Migrated 11 schemas.",
+  "resolved_at": "2026-05-11T12:00:00Z",
+  "resolution_summary": "Phase 3A complete.",
+  "approver": "Human"
+}

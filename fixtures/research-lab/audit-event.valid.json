@@ -1,0 +1,10 @@
+{
+  "id": "AE-0001",
+  "event_type": "validation",
+  "actor": "Codex",
+  "timestamp": "2026-05-11T10:00:00Z",
+  "resource": "schemas/decision-log.schema.json",
+  "action": "migrated to 2020-12",
+  "outcome": "success",
+  "details": "Metaschema validation passed."
+}

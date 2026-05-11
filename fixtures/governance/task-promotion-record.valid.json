@@ -1,0 +1,9 @@
+{
+  "id": "TP-0021",
+  "research_source": "RL-0001",
+  "codex_task": "PR-0025",
+  "promotion_criteria": "All schemas pass 2020-12 metaschema validation.",
+  "redaction_status": "checked",
+  "approval_reference": "AR-0021",
+  "status": "approved"
+}

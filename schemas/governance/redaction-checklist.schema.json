@@ -1,52 +1,60 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aiden-research-os/schemas/redaction-checklist.schema.json",
   "type": "object",
-  "additionalProperties": false,
   "required": [
     "id",
-    "artifact",
-    "raw_prompt_checked",
-    "raw_output_checked",
-    "raw_log_checked",
-    "secret_checked",
-    "local_path_checked",
-    "reviewer",
-    "status"
-  ],
+    "scope",
+    "pr_id",
+    "secret_free",
+    "source_free",
+    "prompt_free",
+    "output_free",
+    "log_free",
+    "identity_preserved",
+    "legal_verified",
+    "finalized_at"
+],
   "properties": {
     "id": {
-      "type": "string",
-      "minLength": 1
+        "type": "string",
+        "pattern": "^RC-[0-9]+$"
     },
-    "artifact": {
-      "type": "string",
-      "minLength": 1
+    "scope": {
+        "type": "string"
     },
-    "raw_prompt_checked": {
-      "type": "boolean"
+    "pr_id": {
+        "type": "string"
     },
-    "raw_output_checked": {
-      "type": "boolean"
+    "secret_free": {
+        "type": "boolean"
     },
-    "raw_log_checked": {
-      "type": "boolean"
+    "source_free": {
+        "type": "boolean"
     },
-    "secret_checked": {
-      "type": "boolean"
+    "prompt_free": {
+        "type": "boolean"
     },
-    "local_path_checked": {
-      "type": "boolean"
+    "output_free": {
+        "type": "boolean"
     },
-    "reviewer": {
-      "type": "string",
-      "minLength": 1
+    "log_free": {
+        "type": "boolean"
     },
-    "status": {
-      "type": "string",
-      "minLength": 1
+    "identity_preserved": {
+        "type": "boolean"
     },
-    "notes": {
-      "type": "string"
+    "legal_verified": {
+        "type": "boolean"
+    },
+    "finalized_at": {
+        "type": "string"
     }
-  }
+},
+  "patternProperties": {
+    "^x-[a-z0-9_-]+$": {
+      "description": "Experimental extension field. Must start with x-. Must not contain credential values or local paths."
+    }
+  },
+  "unevaluatedProperties": false
 }

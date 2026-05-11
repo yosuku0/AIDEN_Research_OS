@@ -1,0 +1,11 @@
+{
+  "id": "PG-0021",
+  "phase": "PH-3A",
+  "decision": "go",
+  "justification": "All 11 schemas migrated and validated.",
+  "approver": "Human",
+  "linked_pr": "PR-0025",
+  "evidence_links": "schemas/*.schema.json; fixtures/*.json",
+  "conditions": "No breaking changes to existing fixtures.",
+  "timestamp": "2026-05-11T12:00:00Z"
+}

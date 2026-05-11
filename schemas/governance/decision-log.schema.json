@@ -1,32 +1,60 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aiden-research-os/schemas/governance/decision-log.schema.json",
   "type": "object",
-  "additionalProperties": false,
   "required": [
     "id",
     "decision_type",
     "status",
     "owner",
+    "linked_adr",
+    "linked_codex_task",
     "decision",
+    "alternatives",
     "rationale",
+    "consequences",
     "rollback_plan"
   ],
   "properties": {
     "id": {
       "type": "string",
-      "minLength": 1
+      "pattern": "^DL-[0-9]+$"
     },
     "decision_type": {
       "type": "string",
-      "minLength": 1
+      "enum": [
+        "phase artifact",
+        "cloud local split",
+        "ledger schema",
+        "runtime boundary",
+        "security test plan",
+        "mcp permission model",
+        "langgraph hitl",
+        "local storage sop",
+        "credential rotation sop",
+        "secret manager selection",
+        "readiness review",
+        "narrow plan",
+        "minimal task design",
+        "final gate",
+        "minimal implementation",
+        "os keychain boundary",
+        "os keychain adapter task",
+        "audit fix approval process",
+        "audit fix ci hardening",
+        "audit fix executable tests",
+        "schema migration",
+        "lab scaffold",
+        "mcp matrix",
+        "langgraph concrete"
+      ]
     },
     "status": {
       "type": "string",
-      "minLength": 1
+      "enum": ["proposed", "accepted", "rejected", "superseded"]
     },
     "owner": {
-      "type": "string",
-      "minLength": 1
+      "type": "string"
     },
     "linked_adr": {
       "type": "string"
@@ -35,26 +63,25 @@
       "type": "string"
     },
     "decision": {
-      "type": "string",
-      "minLength": 1
+      "type": "string"
     },
     "alternatives": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
+      "type": "string"
     },
     "rationale": {
-      "type": "string",
-      "minLength": 1
+      "type": "string"
     },
     "consequences": {
-      "type": "string",
-      "minLength": 1
+      "type": "string"
     },
     "rollback_plan": {
-      "type": "string",
-      "minLength": 1
+      "type": "string"
     }
-  }
+  },
+  "patternProperties": {
+    "^x-[a-z0-9_-]+$": {
+      "description": "Experimental extension field. Must start with x-. Must not contain credential values or local paths."
+    }
+  },
+  "unevaluatedProperties": false
 }

@@ -1,37 +1,63 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aiden-research-os/schemas/research-lab/evidence-bundle.schema.json",
   "type": "object",
-  "additionalProperties": false,
   "required": [
-    "bundle_id",
-    "evidence_items",
-    "redaction_status",
-    "reviewer"
-  ],
+    "id",
+    "lab",
+    "evidence_type",
+    "summary",
+    "sources",
+    "timestamp"
+],
   "properties": {
-    "bundle_id": {
-      "type": "string",
-      "minLength": 1
+    "id": {
+        "type": "string",
+        "pattern": "^EB-[0-9]+$"
     },
-    "evidence_items": {
-      "type": "array",
-      "items": {
+    "lab": {
+        "type": "string",
+        "enum": [
+            "base-dex-lab",
+            "perp-dex-lab",
+            "prediction-market-lab"
+        ]
+    },
+    "evidence_type": {
+        "type": "string",
+        "enum": [
+            "on-chain-data",
+            "simulation",
+            "survey",
+            "literature"
+        ]
+    },
+    "summary": {
         "type": "string"
-      }
     },
-    "redaction_status": {
-      "type": "string",
-      "minLength": 1
+    "sources": {
+        "type": "array",
+        "items": {
+            "type": "string"
+        }
     },
-    "reviewer": {
-      "type": "string",
-      "minLength": 1
+    "timestamp": {
+        "type": "string",
+        "format": "date-time"
     },
-    "linked_decisions": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
+    "data_quality": {
+        "type": "string",
+        "enum": [
+            "verified",
+            "unverified",
+            "simulated"
+        ]
     }
-  }
+},
+  "patternProperties": {
+    "^x-[a-z0-9_-]+$": {
+      "description": "Experimental extension field. Must start with x-. Must not contain credential values or local paths."
+    }
+  },
+  "unevaluatedProperties": false
 }

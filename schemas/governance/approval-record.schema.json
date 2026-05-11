@@ -1,56 +1,78 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aiden-research-os/schemas/approval-record.schema.json",
   "type": "object",
-  "additionalProperties": false,
   "required": [
     "id",
     "approval_type",
     "requested_by",
     "approver",
     "approval_scope",
-    "decision"
-  ],
+    "linked_pr",
+    "linked_phase_gate",
+    "decision",
+    "conditions",
+    "approval_criteria_met",
+    "timestamp"
+],
   "properties": {
     "id": {
-      "type": "string",
-      "minLength": 1
+        "type": "string",
+        "pattern": "^AR-[0-9]+$"
     },
     "approval_type": {
-      "type": "string",
-      "minLength": 1
+        "type": "string",
+        "enum": [
+            "phase artifact approval",
+            "ci security hardening",
+            "executable test migration",
+            "approval flow update",
+            "schema migration",
+            "lab scaffold approval",
+            "mcp matrix update",
+            "langgraph concrete approval"
+        ]
     },
     "requested_by": {
-      "type": "string",
-      "minLength": 1
+        "type": "string"
     },
     "approver": {
-      "type": "string",
-      "minLength": 1
+        "type": "string"
     },
     "approval_scope": {
-      "type": "string",
-      "minLength": 1
+        "type": "string"
     },
     "linked_pr": {
-      "type": "string"
+        "type": "string"
     },
     "linked_phase_gate": {
-      "type": "string"
+        "type": "string"
     },
     "decision": {
-      "enum": [
-        "approve",
-        "edit",
-        "reject",
-        "hold",
-        "pending"
-      ]
+        "type": "string",
+        "enum": [
+            "pending",
+            "hold",
+            "approve",
+            "edit",
+            "reject"
+        ]
     },
     "conditions": {
-      "type": "string"
+        "type": "string"
+    },
+    "approval_criteria_met": {
+        "type": "string",
+        "description": "JSON array of 8 booleans"
     },
     "timestamp": {
-      "type": "string"
+        "type": "string"
     }
-  }
+},
+  "patternProperties": {
+    "^x-[a-z0-9_-]+$": {
+      "description": "Experimental extension field. Must start with x-. Must not contain credential values or local paths."
+    }
+  },
+  "unevaluatedProperties": false
 }

@@ -1,40 +1,45 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aiden-research-os/schemas/open-questions.schema.json",
   "type": "object",
-  "additionalProperties": false,
   "required": [
     "id",
     "question",
+    "context",
     "status",
-    "blocker",
-    "related_adr",
-    "owner"
-  ],
+    "owner",
+    "linked_adr"
+],
   "properties": {
     "id": {
-      "type": "string",
-      "minLength": 1
+        "type": "string",
+        "pattern": "^OQ-[0-9]+$"
     },
     "question": {
-      "type": "string",
-      "minLength": 1
+        "type": "string"
+    },
+    "context": {
+        "type": "string"
     },
     "status": {
-      "type": "string",
-      "minLength": 1
-    },
-    "blocker": {
-      "type": "string"
-    },
-    "related_adr": {
-      "type": "string"
+        "type": "string",
+        "enum": [
+            "open",
+            "closed",
+            "deferred"
+        ]
     },
     "owner": {
-      "type": "string",
-      "minLength": 1
+        "type": "string"
     },
-    "next_review": {
-      "type": "string"
+    "linked_adr": {
+        "type": "string"
     }
-  }
+},
+  "patternProperties": {
+    "^x-[a-z0-9_-]+$": {
+      "description": "Experimental extension field. Must start with x-. Must not contain credential values or local paths."
+    }
+  },
+  "unevaluatedProperties": false
 }

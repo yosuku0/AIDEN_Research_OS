@@ -1,0 +1,13 @@
+{
+  "id": "RC-0021",
+  "scope": "PG-0021",
+  "pr_id": "PR-0025",
+  "secret_free": true,
+  "source_free": true,
+  "prompt_free": true,
+  "output_free": true,
+  "log_free": true,
+  "identity_preserved": true,
+  "legal_verified": true,
+  "finalized_at": "2026-05-11T12:00:00Z"
+}
