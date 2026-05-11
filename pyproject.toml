@@ -1,0 +1,83 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "aiden-core"
+version = "0.1.0"
+description = "AIDEN Research OS — core orchestration engine"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+
+dependencies = [
+    # Orchestration
+    "langgraph>=0.2.0",
+    "langchain-core>=0.3.0",
+
+    # Model routing (no API keys bundled — retrieved via KeychainAdapter)
+    "litellm>=1.40.0",
+
+    # MCP server
+    "fastmcp>=0.4.0",
+
+    # Secret management — OS keychain abstraction
+    "keyring>=25.0.0",
+
+    # Configuration (no literal secrets in settings)
+    "pydantic>=2.0.0",
+    "pydantic-settings>=2.0.0",
+
+    # Schema validation
+    "jsonschema>=4.23.0",
+
+    # Observability (optional Langfuse, always JSONL fallback)
+    "langfuse>=2.0.0",
+
+    # Utilities
+    "structlog>=24.0.0",
+    "python-ulid>=2.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-cov>=5.0.0",
+    "ruff>=0.4.0",
+    "mypy>=1.10.0",
+    "types-jsonschema",
+    # Fake keyring backend for tests
+    "keyrings.alt>=5.0.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/aiden"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "S", "B", "A"]
+ignore = [
+    "S101",   # assert allowed in tests
+    "S603",   # subprocess — controlled in scripts only
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S", "N802"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = false
+warn_unused_ignores = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+addopts = "-v --tb=short"
+
+[tool.coverage.run]
+source = ["src/aiden"]
+omit = ["tests/*"]

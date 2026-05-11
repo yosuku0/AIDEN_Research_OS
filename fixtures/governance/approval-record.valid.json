@@ -1,0 +1,13 @@
+{
+  "id": "AR-0021",
+  "approval_type": "schema migration",
+  "requested_by": "Codex",
+  "approver": "Human",
+  "approval_scope": "11 schemas to 2020-12",
+  "linked_pr": "PR-0025",
+  "linked_phase_gate": "PG-0021",
+  "decision": "approve",
+  "conditions": "All schemas pass metaschema validation.",
+  "approval_criteria_met": "[true,true,true,true,true,true,true,true]",
+  "timestamp": "2026-05-11T12:00:00Z"
+}

@@ -1,0 +1,11 @@
+{
+  "id": "EB-0001",
+  "lab": "base-dex-lab",
+  "evidence_type": "simulation",
+  "summary": "Liquidity concentration analysis for Base DEX.",
+  "sources": [
+    "SR-0001"
+  ],
+  "timestamp": "2026-05-11T10:00:00Z",
+  "data_quality": "simulated"
+}

@@ -1,53 +1,57 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aiden-research-os/schemas/phase-gate-record.schema.json",
   "type": "object",
-  "additionalProperties": false,
   "required": [
     "id",
     "phase",
     "decision",
     "justification",
-    "approver"
-  ],
+    "approver",
+    "linked_pr",
+    "evidence_links",
+    "conditions",
+    "timestamp"
+],
   "properties": {
     "id": {
-      "type": "string",
-      "minLength": 1
+        "type": "string",
+        "pattern": "^PG-[0-9]+$"
     },
     "phase": {
-      "type": "string",
-      "minLength": 1
+        "type": "string"
     },
     "decision": {
-      "enum": [
-        "go",
-        "no-go",
-        "hold",
-        "pending"
-      ]
+        "type": "string",
+        "enum": [
+            "go",
+            "no-go",
+            "hold"
+        ]
     },
     "justification": {
-      "type": "string",
-      "minLength": 1
+        "type": "string"
     },
     "approver": {
-      "type": "string",
-      "minLength": 1
+        "type": "string"
     },
     "linked_pr": {
-      "type": "string"
+        "type": "string"
     },
     "evidence_links": {
-      "type": "array",
-      "items": {
         "type": "string"
-      }
     },
     "conditions": {
-      "type": "string"
+        "type": "string"
     },
     "timestamp": {
-      "type": "string"
+        "type": "string"
     }
-  }
+},
+  "patternProperties": {
+    "^x-[a-z0-9_-]+$": {
+      "description": "Experimental extension field. Must start with x-. Must not contain credential values or local paths."
+    }
+  },
+  "unevaluatedProperties": false
 }

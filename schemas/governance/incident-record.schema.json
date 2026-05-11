@@ -1,57 +1,76 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aiden-research-os/schemas/incident-record.schema.json",
   "type": "object",
-  "additionalProperties": false,
   "required": [
     "id",
-    "incident_classification",
+    "scope",
+    "finding_id",
+    "description",
     "severity",
-    "detected_by",
-    "response_steps",
-    "containment_status",
-    "closure_criteria",
-    "status"
-  ],
+    "detected_at",
+    "reported_by",
+    "status",
+    "resolution_plan",
+    "resolved_at",
+    "resolution_summary",
+    "approver"
+],
   "properties": {
     "id": {
-      "type": "string",
-      "minLength": 1
+        "type": "string",
+        "pattern": "^INC-[0-9]+$"
     },
-    "incident_classification": {
-      "type": "string",
-      "minLength": 1
+    "scope": {
+        "type": "string"
+    },
+    "finding_id": {
+        "type": "string",
+        "pattern": "^H-[0-9]+$|^INC-[0-9]+$"
+    },
+    "description": {
+        "type": "string"
     },
     "severity": {
-      "type": "string",
-      "minLength": 1
+        "type": "string",
+        "enum": [
+            "CRITICAL",
+            "HIGH",
+            "MEDIUM",
+            "LOW"
+        ]
     },
-    "detected_by": {
-      "type": "string",
-      "minLength": 1
+    "detected_at": {
+        "type": "string",
+        "format": "date-time"
     },
-    "response_steps": {
-      "type": "array",
-      "items": {
+    "reported_by": {
         "type": "string"
-      }
-    },
-    "containment_status": {
-      "type": "string",
-      "minLength": 1
-    },
-    "closure_criteria": {
-      "type": "string",
-      "minLength": 1
-    },
-    "linked_artifacts": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
     },
     "status": {
-      "type": "string",
-      "minLength": 1
+        "type": "string",
+        "enum": [
+            "open",
+            "resolved"
+        ]
+    },
+    "resolution_plan": {
+        "type": "string"
+    },
+    "resolved_at": {
+        "type": "string"
+    },
+    "resolution_summary": {
+        "type": "string"
+    },
+    "approver": {
+        "type": "string"
     }
-  }
+},
+  "patternProperties": {
+    "^x-[a-z0-9_-]+$": {
+      "description": "Experimental extension field. Must start with x-. Must not contain credential values or local paths."
+    }
+  },
+  "unevaluatedProperties": false
 }

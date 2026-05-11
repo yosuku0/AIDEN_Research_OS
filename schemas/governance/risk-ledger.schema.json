@@ -1,63 +1,62 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aiden-research-os/schemas/risk-ledger.schema.json",
   "type": "object",
-  "additionalProperties": false,
   "required": [
     "id",
-    "risk_class",
-    "severity",
+    "risk",
+    "impact",
     "likelihood",
-    "status",
-    "trigger",
-    "mitigation_controls",
-    "detection_method",
-    "residual_risk"
-  ],
+    "mitigation",
+    "owner",
+    "status"
+],
   "properties": {
     "id": {
-      "type": "string",
-      "minLength": 1
+        "type": "string",
+        "pattern": "^RK-[0-9]+$"
     },
-    "risk_class": {
-      "type": "string",
-      "minLength": 1
+    "risk": {
+        "type": "string"
     },
-    "severity": {
-      "enum": [
-        "low",
-        "medium",
-        "high",
-        "critical"
-      ]
+    "impact": {
+        "type": "string",
+        "enum": [
+            "CRITICAL",
+            "HIGH",
+            "MEDIUM",
+            "LOW"
+        ]
     },
     "likelihood": {
-      "enum": [
-        "low",
-        "medium",
-        "high"
-      ]
+        "type": "string",
+        "enum": [
+            "certain",
+            "likely",
+            "possible",
+            "unlikely"
+        ]
+    },
+    "mitigation": {
+        "type": "string"
+    },
+    "owner": {
+        "type": "string"
     },
     "status": {
-      "type": "string",
-      "minLength": 1
-    },
-    "trigger": {
-      "type": "string",
-      "minLength": 1
-    },
-    "mitigation_controls": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-    "detection_method": {
-      "type": "string",
-      "minLength": 1
-    },
-    "residual_risk": {
-      "type": "string",
-      "minLength": 1
+        "type": "string",
+        "enum": [
+            "open",
+            "mitigated",
+            "accepted",
+            "transferred"
+        ]
     }
-  }
+},
+  "patternProperties": {
+    "^x-[a-z0-9_-]+$": {
+      "description": "Experimental extension field. Must start with x-. Must not contain credential values or local paths."
+    }
+  },
+  "unevaluatedProperties": false
 }

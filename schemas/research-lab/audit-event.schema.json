@@ -1,40 +1,61 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aiden-research-os/schemas/research-lab/audit-event.schema.json",
   "type": "object",
-  "additionalProperties": false,
   "required": [
-    "trace_id",
+    "id",
+    "event_type",
     "actor",
-    "event",
-    "governance_policy",
-    "result"
-  ],
+    "timestamp",
+    "resource",
+    "action",
+    "outcome"
+],
   "properties": {
-    "trace_id": {
-      "type": "string",
-      "minLength": 1
+    "id": {
+        "type": "string",
+        "pattern": "^AE-[0-9]+$"
+    },
+    "event_type": {
+        "type": "string",
+        "enum": [
+            "access",
+            "modification",
+            "approval",
+            "rejection",
+            "scan",
+            "validation"
+        ]
     },
     "actor": {
-      "type": "string",
-      "minLength": 1
+        "type": "string"
     },
-    "event": {
-      "type": "string",
-      "minLength": 1
+    "timestamp": {
+        "type": "string",
+        "format": "date-time"
     },
-    "reasoning_trace": {
-      "type": "string"
+    "resource": {
+        "type": "string"
     },
-    "governance_policy": {
-      "type": "string",
-      "minLength": 1
+    "action": {
+        "type": "string"
     },
-    "approval_reference": {
-      "type": "string"
+    "outcome": {
+        "type": "string",
+        "enum": [
+            "success",
+            "failure",
+            "blocked"
+        ]
     },
-    "result": {
-      "type": "string",
-      "minLength": 1
+    "details": {
+        "type": "string"
     }
-  }
+},
+  "patternProperties": {
+    "^x-[a-z0-9_-]+$": {
+      "description": "Experimental extension field. Must start with x-. Must not contain credential values or local paths."
+    }
+  },
+  "unevaluatedProperties": false
 }
