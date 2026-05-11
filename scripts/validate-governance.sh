@@ -72,7 +72,9 @@ check_artifact_existence() {
     docs/system/SYSTEM_OF_SYSTEMS.md
     docs/governance/SOURCE_OF_TRUTH.md
     docs/governance/LEDGER_SCHEMA.md
+    docs/governance/APPROVAL_FLOW.md
     research/ledgers/decision-log.md
+    research/ledgers/approval-record.md
     codex/templates/task-template.md
     scripts/validate-governance.sh
   )
@@ -160,9 +162,13 @@ check_secret_scan() {
   local found=false
   local pattern
   for pattern in "${patterns[@]}"; do
-    if grep -RInE --exclude-dir=.git --exclude-dir=.venv --exclude-dir=__pycache__ -- "$pattern" "${scan_paths[@]}" >/tmp/aiden-secret-scan.txt 2>/dev/null; then
-      fail "secret-like pattern detected: $pattern"
-      sed 's/^/  /' /tmp/aiden-secret-scan.txt
+    local matches
+    matches=$(grep -RInE --exclude-dir=.git --exclude-dir=.venv --exclude-dir=__pycache__ -- "$pattern" "${scan_paths[@]}" 2>/dev/null || true)
+    if [[ -n "$matches" ]]; then
+      fail "secret-like pattern detected in governed file"
+      # SECURITY FIX: Output file paths only (first field), not the matched content
+      # This prevents secret candidates from leaking into logs or temp files
+      echo "$matches" | cut -d: -f1 | sort -u | sed 's/^/  file: /'
       found=true
     fi
   done
@@ -178,6 +184,7 @@ check_secret_scan() {
   if [[ "$found" == false ]]; then
     pass "no secret-like patterns found"
   fi
+
 }
 
 check_approval_status() {
@@ -189,17 +196,27 @@ check_approval_status() {
     return
   fi
 
-  local total pending
+  local total pending approved
   total=$(grep -Ec '^\| AR-[0-9]+' "$approval_file" || true)
-  pending=$(grep -Ec '^\| AR-[0-9]+.*\|[[:space:]]*pending[[:space:]]*\|[[:space:]]*$' "$approval_file" || true)
+  pending=$(grep -Ec '^\| AR-[0-9]+.*\|[[:space:]]*pending[[:space:]]*\|' "$approval_file" || true)
+  approved=$(grep -Ec '^\| AR-[0-9]+.*\|[[:space:]]*approve[[:space:]]*\|' "$approval_file" || true)
 
   if [[ "$total" -gt 0 && "$total" -eq "$pending" ]]; then
     warn "all $total approval records remain pending; human approval is required before merge"
+  elif [[ "$approved" -gt 0 ]]; then
+    pass "approval records checked: $approved approved, $pending pending of $total total"
   else
-    pass "approval records checked: $pending of $total pending"
+    pass "approval records checked: $pending of $total records pending"
+  fi
+
+  if grep -q "approval_criteria_met" "$approval_file"; then
+    pass "approval_criteria_met field is present"
+  else
+    fail "approval_criteria_met field is missing"
   fi
 }
 
+# Run all checks
 check_artifact_existence
 check_schema_validation
 check_secret_scan

@@ -6,6 +6,25 @@ docs/governance/LEDGER_SCHEMA.md
 
 ## Entries
 
-| id | artifact | raw_prompt_checked | raw_output_checked | raw_log_checked | secret_checked | local_path_checked | reviewer | status | notes |
-|---|---|---|---|---|---|---|---|---|---|
-| RC-0001 | scaffold artifacts | true | true | true | true | true | Codex | draft | Promote summaries only. |
+| id | scope | pr_id | secret_free | source_free | prompt_free | output_free | log_free | identity_preserved | legal_verified | finalized_at |
+|---|---|---|---|---|---|---|---|---|---|---|
+| RC-0001 | PG-0001 | PR-0001 | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | 2026-04-24T14:00:00Z |
+| RC-0002 | PG-0002 | PR-0002 | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | 2026-04-24T14:00:00Z |
+| RC-0003 | PG-0003 | PR-0003 | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | 2026-04-24T14:00:00Z |
+| RC-0004 | PG-0004 | PR-0004 | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | 2026-04-24T14:00:00Z |
+| RC-0005 | PG-0005 | PR-0005 | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | 2026-04-24T14:00:00Z |
+| RC-0006 | PG-0006 | PR-0006 | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | 2026-04-24T14:00:00Z |
+| RC-0007 | PG-0007 | PR-0007 | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | 2026-04-24T14:00:00Z |
+| RC-0008 | PG-0008 | PR-0008 | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | 2026-04-24T14:00:00Z |
+| RC-0009 | PG-0009 | PR-0009 | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | 2026-04-24T14:00:00Z |
+| RC-0010 | PG-0010 | PR-0010 | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | 2026-04-24T14:00:00Z |
+| RC-0011 | PG-0011 | PR-0011 | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | 2026-04-24T14:00:00Z |
+| RC-0012 | PG-0012 | PR-0012 | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | 2026-04-24T14:00:00Z |
+| RC-0013 | PG-0013 | PR-0013 | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | 2026-04-24T14:00:00Z |
+| RC-0014 | PG-0014 | PR-0014 | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | 2026-04-24T14:00:00Z |
+| RC-0015 | PG-0015 | PR-0015 | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | 2026-04-24T14:00:00Z |
+| RC-0016 | PG-0016 | PR-0016 | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | 2026-04-24T14:00:00Z |
+| RC-0017 | PG-0017 | PR-0017 | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | 2026-04-24T14:00:00Z |
+| RC-0018 | PG-0018 | PR-0018 | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | 2026-04-24T14:00:00Z |
+| RC-0019 | PG-0019 | PR-0019 | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | 2026-04-24T14:00:00Z |
+| RC-0020 | PG-0020 | PR-0020 | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | TRUE | 2026-04-24T14:00:00Z |

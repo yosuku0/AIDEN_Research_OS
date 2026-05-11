@@ -1,7 +1,7 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aiden-research-os.local/schemas/secret-manager/safe-config.schema.json",
   "type": "object",
-  "additionalProperties": false,
   "required": [
     "secret_reference_id",
     "storage_candidate",
@@ -36,5 +36,11 @@
     "notes": {
       "type": "string"
     }
-  }
+  },
+  "patternProperties": {
+    "^x-[a-z0-9_-]+$": {
+      "description": "Experimental extension field. Must not contain credential values, local paths, or execution authority."
+    }
+  },
+  "unevaluatedProperties": false
 }
